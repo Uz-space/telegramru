@@ -867,7 +867,7 @@ export class AppSidebarLeft extends SidebarSlider {
 
     // The indicator itself is the menu toggle, so the tools menu pops
     // upwards from the bottom of the screen, centered above the bar.
-    this.createToolsMenu(indicator, {top: 8, bottom: 8}, 'top-center');
+    this.createToolsMenu(indicator, {top: 8, bottom: 8}, 'top-center', 'btn-menu-instant');
 
     this.sidebarEl.append(indicator);
     this.homeIndicator = indicator;
