@@ -1,32 +1,44 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
 node_modules
-dist
-dist-ssr
-.output
-.vinxi
-.tanstack/**
-.nitro
-*.local
-
-# Wrangler / Cloudflare
-.wrangler/
-.dev.vars
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+coverage
+__pycache__
+/dist
+**/.DS_Store
+stats.json
+certs
+public2
+public3
+.vscode
+session_name.session
+tasks.txt
+yarn.lock
+stats.html
+ssh.json
+archive.zip
 .idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+.env.local
+src/langPackLocalVersion.ts
+/.ai
+tmp
+
+# Throw files you don't need in this folder
+ignore
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+
+.claude/bugs-cache
+.pnpm-store/
+
+# Build output must never be committed into public/
+/public/*.js
+/public/*.js.map
+/public/*.css
+/public/*.map
+/public/index.html
+!/public/decoderWorker.min.js
+!/public/encoderWorker.min.js
+!/public/recorder.min.js
+!/public/waveWorker.min.js
+tsconfig.tsbuildinfo
