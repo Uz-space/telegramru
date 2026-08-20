@@ -1457,6 +1457,14 @@
   cursor: pointer;
   touch-action: none;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  // .btn-menu-toggle.menu-open paints a light background — on a full-width
+  // strip that reads as a grey/white bar under the indicator. Keep it clear.
+  &.menu-open {
+    background-color: transparent !important;
+  }
+
 
   &-bar {
     width: 8.375rem;
