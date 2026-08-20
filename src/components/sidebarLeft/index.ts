@@ -839,7 +839,8 @@ export class AppSidebarLeft extends SidebarSlider {
 
         filteredButtons.splice(0, filteredButtons.length, ...buttons);
       },
-      onOpen: () => {
+      onOpen: (e, element) => {
+        menuClassName && element.classList.add(menuClassName);
         moreSubmenu.onOpen();
         newSubmenu.onOpen();
       },
