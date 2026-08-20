@@ -670,7 +670,8 @@ export class AppSidebarLeft extends SidebarSlider {
   public createToolsMenu(
     mountTo?: HTMLElement,
     positionPadding?: Parameters<typeof ButtonMenuToggle>[0]['positionPadding'],
-    direction: Parameters<typeof ButtonMenuToggle>[0]['direction'] = 'bottom-right'
+    direction: Parameters<typeof ButtonMenuToggle>[0]['direction'] = 'bottom-right',
+    menuClassName?: string
   ) {
     const closeTabsBefore = async(clb: () => void) => {
       this.closeEverythingInside() && await pause(200);
@@ -838,7 +839,8 @@ export class AppSidebarLeft extends SidebarSlider {
 
         filteredButtons.splice(0, filteredButtons.length, ...buttons);
       },
-      onOpen: () => {
+      onOpen: (e, element) => {
+        menuClassName && element.classList.add(menuClassName);
         moreSubmenu.onOpen();
         newSubmenu.onOpen();
       },
@@ -865,7 +867,7 @@ export class AppSidebarLeft extends SidebarSlider {
 
     // The indicator itself is the menu toggle, so the tools menu pops
     // upwards from the bottom of the screen, centered above the bar.
-    this.createToolsMenu(indicator, {top: 8, bottom: 8}, 'top-center');
+    this.createToolsMenu(indicator, {top: 8, bottom: 8}, 'top-center', 'btn-menu-instant');
 
     this.sidebarEl.append(indicator);
     this.homeIndicator = indicator;

@@ -1474,3 +1474,13 @@
     transform: translateY(-.25rem) scaleX(1.06);
   }
 }
+
+// The tools menu opened from the home indicator should appear right where it is
+// positioned — no scale/slide animation from the edge.
+.btn-menu.btn-menu-instant {
+  &,
+  .btn-menu-transition {
+    transform: var(--transform-extra) !important;
+    transition: none !important;
+  }
+}
