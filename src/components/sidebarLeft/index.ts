@@ -670,7 +670,8 @@ export class AppSidebarLeft extends SidebarSlider {
   public createToolsMenu(
     mountTo?: HTMLElement,
     positionPadding?: Parameters<typeof ButtonMenuToggle>[0]['positionPadding'],
-    direction: Parameters<typeof ButtonMenuToggle>[0]['direction'] = 'bottom-right'
+    direction: Parameters<typeof ButtonMenuToggle>[0]['direction'] = 'bottom-right',
+    menuClassName?: string
   ) {
     const closeTabsBefore = async(clb: () => void) => {
       this.closeEverythingInside() && await pause(200);
