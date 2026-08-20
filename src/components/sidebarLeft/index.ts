@@ -24,6 +24,7 @@ import App from '@config/app';
 import ButtonMenuToggle from '@components/buttonMenuToggle';
 import sessionStorage from '@lib/sessionStorage';
 import {attachClickEvent, CLICK_EVENT_NAME, simulateClickEvent} from '@helpers/dom/clickEvent';
+import cancelEvent from '@helpers/dom/cancelEvent';
 import ButtonIcon from '@components/buttonIcon';
 import confirmationPopup from '@components/confirmationPopup';
 import {replaceButtonIcon} from '@components/button';
