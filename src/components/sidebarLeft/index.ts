@@ -872,14 +872,27 @@ export class AppSidebarLeft extends SidebarSlider {
     this.sidebarEl.append(indicator);
     this.homeIndicator = indicator;
 
+    // A swipe that opens the menu is followed by the browser's own synthetic
+    // mousedown/click on release (CLICK_EVENT_NAME is 'mousedown' on touch),
+    // which would immediately toggle the just-opened menu back — the gesture
+    // felt like it froze. Swallow those trailing events for a short window.
+    let suppressUntil = 0;
+    const swallow = (e: Event) => {
+      if(Date.now() >= suppressUntil) return;
+      cancelEvent(e);
+      e.stopImmediatePropagation();
+    };
+    indicator.addEventListener(CLICK_EVENT_NAME, swallow, {capture: true});
+    indicator.addEventListener('click', swallow, {capture: true});
+
     const openMenu = () => {
       if(indicator.classList.contains('menu-open')) {
         return;
       }
 
       simulateClickEvent(indicator);
+      suppressUntil = Date.now() + 500;
     };
-
 
     new SwipeHandler({
       element: bar,
