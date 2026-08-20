@@ -716,7 +716,7 @@ export class AppSidebarLeft extends SidebarSlider {
           this.createTab(AppSettingsTab).open();
         });
       }
-    }, moreSubmenu];
+    }];
 
 
     const filteredButtons = menuButtons.filter(Boolean);
