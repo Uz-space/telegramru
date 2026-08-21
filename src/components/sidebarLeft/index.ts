@@ -899,15 +899,10 @@ export class AppSidebarLeft extends SidebarSlider {
       element: bar,
       cancelEvent: true,
       onSwipe: (xDiff, yDiff) => {
-        indicator.classList.toggle('is-pulling', yDiff < -8);
         if(yDiff <= -32) {
-          indicator.classList.remove('is-pulling');
           openMenu();
           return true;
         }
-      },
-      onReset: () => {
-        indicator.classList.remove('is-pulling');
       }
     });
   }
