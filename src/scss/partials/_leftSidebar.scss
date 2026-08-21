@@ -1473,13 +1473,6 @@
     border-radius: 9999px;
     background-color: var(--secondary-text-color);
     opacity: .5;
-    transition: transform .15s ease-out, opacity .15s ease-out;
-  }
-
-  &.is-pulling &-bar,
-  &.menu-open &-bar {
-    opacity: 1;
-    transform: translateY(-.25rem) scaleX(1.06);
   }
 }
 
