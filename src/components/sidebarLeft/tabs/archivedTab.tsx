@@ -56,7 +56,7 @@ const ArchivedTab: Component = () => {
 
   // вообще, так делать нельзя, но нет времени чтобы переделать главный чатлист на слайд...
   (tab as any)._onOpenAfterTimeout = () => {
-    renderStories();
+    // stories are disabled
     appDialogsManager.xds[wasFilterId].clear();
   };
 
