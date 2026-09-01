@@ -82,7 +82,6 @@ import eachTimeout from '@helpers/eachTimeout';
 import PopupSharedFolderInvite from '@components/popups/sharedFolderInvite';
 import showChatPreviewPopup, {chatPreviewAnchorFromDialogRow} from '@components/popups/chatPreview';
 import showLimitPopup from '@components/popups/limit';
-import StoriesList from '@components/stories/list';
 import {render} from 'solid-js/web';
 import {avatarNew} from '@components/avatarNew';
 import Icon from '@components/icon';
@@ -692,10 +691,7 @@ export class AppDialogsManager {
   public cancelChatlistUpdatesFetching: () => void;
   public fetchChatlistUpdates: () => void;
 
-  private storiesListContainer: HTMLDivElement;
   private bottomPart: HTMLDivElement;
-  private disposeStories: () => void;
-  public resizeStoriesList: () => void;
 
   private suggestionContainer: HTMLElement;
   private authorizationContainer: HTMLElement;
@@ -733,9 +729,6 @@ export class AppDialogsManager {
       const height = entries[0].borderBoxSize?.[0]?.blockSize ?? entries[0].contentRect.height;
       bottomPart.style.setProperty('--chatlist-overlay-height', height + 'px');
     }).observe(this.foldersOverlay);
-
-    const storiesListContainer = this.storiesListContainer = document.createElement('div');
-    storiesListContainer.classList.add('stories-list');
 
     fillForumTabRegister();
 
@@ -952,29 +945,6 @@ export class AppDialogsManager {
     });
   }
 
-  private _renderStories() {
-    this.chatsContainer.parentElement.parentElement.firstElementChild.after(this.storiesListContainer);
-    return StoriesList({
-      foldInto: document.querySelector('.item-main .input-search input'),
-      setScrolledOn: this.chatsContainer,
-      getScrollable: () => this.xd.scrollable.container,
-      listenWheelOn: this.bottomPart,
-      offsetX: -1,
-      resizeCallback: (callback) => {
-        this.resizeStoriesList = callback;
-      },
-      onExpand: () => {
-        const container = this.xd.scrollable.container;
-        container.classList.add('scrolled-start');
-        fastSmoothScrollToStart(container, 'y');
-      }
-    });
-  }
-
-  private renderStories() {
-    this.disposeStories = render(() => this._renderStories(), this.storiesListContainer);
-  }
-
   public get chatList() {
     return this.xd.sortedList.list;
   }
@@ -1151,11 +1121,6 @@ export class AppDialogsManager {
     const haveFilters = filtersArr.length > REAL_FOLDERS.size;
     // const filter = filtersArr.find((filter) => filter.id !== FOLDER_ID_ARCHIVE);
 
-    this.disposeStories?.();
-    this.disposeStories =
-      this.resizeStoriesList =
-      undefined;
-
     const {onClick: _onClick, hydrateFilters} = useFolders();
     const onClick = untrack(_onClick);
 
@@ -1191,7 +1156,6 @@ export class AppDialogsManager {
 
     addFiltersPromise && await wrapPromiseWithMiddleware(addFiltersPromise);
 
-    // stories are disabled
     this.doNotRenderChatList = undefined;
 
     this.filterId = -1;
