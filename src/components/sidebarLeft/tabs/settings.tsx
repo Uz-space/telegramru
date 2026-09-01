@@ -24,15 +24,10 @@ import PopupElement from '@components/popups';
 import {attachClickEvent} from '@helpers/dom/clickEvent';
 import Section from '@components/section';
 import {AppStickersAndEmojiTab} from '@components/solidJsTabs/tabs';
-import PopupPremium from '@components/popups/premium';
-import apiManagerProxy from '@lib/apiManagerProxy';
 import useStars, {hasTonTransactions} from '@stores/stars';
 import PopupStars from '@components/popups/stars';
 import {renderPeerProfile} from '@components/peerProfile';
 import SolidJSHotReloadGuardProvider from '@lib/solidjs/hotReloadGuardProvider';
-import showPickUserPopup from '@components/popups/pickUser';
-import showMyQrCodePopup from '@components/popups/myQrCode';
-import PopupSendGift from '@components/popups/sendGift';
 import {formatNanoton} from '@helpers/paymentsWrapCurrencyAmount';
 import showLogOutPopup from '@components/popups/logOut';
 import {useSuperTab} from '@components/solidJsTabs/superTabProvider';
@@ -83,8 +78,7 @@ const Settings = () => {
   const promiseCollector = usePromiseCollector();
   const [tab] = useSuperTab();
 
-  // ── Header (qr + edit + overflow menu)
-  const qrBtn = ButtonIcon('qr');
+  // ── Header (edit + overflow menu)
   const editBtn = ButtonIcon('edit');
   const btnMenu = ButtonMenuToggle({
     listenerSetter: tab.listenerSetter,
@@ -98,12 +92,9 @@ const Settings = () => {
 
   onMount(() => {
     tab.container.classList.add('settings-container');
-    tab.header.append(qrBtn, editBtn, btnMenu);
+    tab.header.append(editBtn, btnMenu);
   });
 
-  attachClickEvent(qrBtn, () => {
-    showMyQrCodePopup();
-  }, {listenerSetter: tab.listenerSetter});
 
   // ── Edit profile click — build fresh args for every open so a failed or
   //    superseded connected-bot request isn't retained by the Settings tab.
@@ -203,14 +194,6 @@ const Settings = () => {
     subTab.open({authorizations, connectedBot});
   };
 
-  // ── Premium section. Signal-backed so `<Show>` re-evaluates when the
-  //    "purchase blocked" check resolves before `selectTab` fires — the section
-  //    either appears with the rest of the tab, or doesn't appear at all.
-  const [premiumBlocked, setPremiumBlocked] = createSignal(false);
-  promiseCollector.collect(
-    Promise.resolve(apiManagerProxy.isPremiumPurchaseBlocked()).then(setPremiumBlocked)
-  );
-
   // ── Reactive star balances drive the titleRight text and stars row
   //    visibility. Keep the starsTon row available when it has a balance or
   //    transaction history, including after the balance returns to zero.
@@ -233,18 +216,6 @@ const Settings = () => {
   // Lottie workers preload — fire and forget.
   lottieLoader.loadLottieWorkers();
 
-  const onSendGiftClick = () => {
-    showPickUserPopup({
-      titleLangKey: 'SendGiftTo',
-      placeholder: 'Chat.Menu.SendGift',
-      selfPresence: 'SendGiftSelfCaption',
-      meAsSaved: false,
-      onSelect: (chosen) => {
-        PopupElement.createPopup(PopupSendGift, {peerId: chosen[0].peerId});
-      },
-      filterPeerTypeBy: ['isRegularUser', 'isBroadcast']
-    });
-  };
 
   return (
     <>
@@ -277,34 +248,25 @@ const Settings = () => {
           </Row>
         </div>
       </Section>
-      <Show when={!premiumBlocked()}>
-        <Section>
-          <Row clickable={() => PopupPremium.show()}>
-            <Row.Icon icon="star" class="row-icon-premium-color" />
-            <Row.Title>{i18n('Premium.Boarding.Title')}</Row.Title>
+      <Section>
+        <Show when={!!stars()}>
+          <Row clickable={() => PopupElement.createPopup(PopupStars)}>
+            <Row.Icon icon="star" class="row-icon-stars-color" />
+            <Row.Title titleRight={'' + stars()} titleRightSecondary>
+              {i18n('MenuTelegramStars')}
+            </Row.Title>
           </Row>
-          <Show when={!!stars()}>
-            <Row clickable={() => PopupElement.createPopup(PopupStars)}>
-              <Row.Icon icon="star" class="row-icon-stars-color" />
-              <Row.Title titleRight={'' + stars()} titleRightSecondary>
-                {i18n('MenuTelegramStars')}
-              </Row.Title>
-            </Row>
-          </Show>
-          <Show when={hasTonTransactions() || String(starsTon()) !== '0'}>
-            <Row clickable={() => PopupElement.createPopup(PopupStars, {ton: true})}>
-              <Row.Icon icon="ton" />
-              <Row.Title titleRight={formatNanoton(starsTon())} titleRightSecondary>
-                {i18n('MenuTelegramStarsTon')}
-              </Row.Title>
-            </Row>
-          </Show>
-          <Row clickable={onSendGiftClick}>
-            <Row.Icon icon="gift" />
-            <Row.Title>{i18n('Chat.Menu.SendGift')}</Row.Title>
+        </Show>
+        <Show when={hasTonTransactions() || String(starsTon()) !== '0'}>
+          <Row clickable={() => PopupElement.createPopup(PopupStars, {ton: true})}>
+            <Row.Icon icon="ton" />
+            <Row.Title titleRight={formatNanoton(starsTon())} titleRightSecondary>
+              {i18n('MenuTelegramStarsTon')}
+            </Row.Title>
           </Row>
-        </Section>
-      </Show>
+        </Show>
+      </Section>
+
     </>
   );
 };
