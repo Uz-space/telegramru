@@ -248,24 +248,27 @@ const Settings = () => {
           </Row>
         </div>
       </Section>
-      <Section>
-        <Show when={!!stars()}>
-          <Row clickable={() => PopupElement.createPopup(PopupStars)}>
-            <Row.Icon icon="star" class="row-icon-stars-color" />
-            <Row.Title titleRight={'' + stars()} titleRightSecondary>
-              {i18n('MenuTelegramStars')}
-            </Row.Title>
-          </Row>
-        </Show>
-        <Show when={hasTonTransactions() || String(starsTon()) !== '0'}>
-          <Row clickable={() => PopupElement.createPopup(PopupStars, {ton: true})}>
-            <Row.Icon icon="ton" />
-            <Row.Title titleRight={formatNanoton(starsTon())} titleRightSecondary>
-              {i18n('MenuTelegramStarsTon')}
-            </Row.Title>
-          </Row>
-        </Show>
-      </Section>
+      <Show when={!!stars() || hasTonTransactions() || String(starsTon()) !== '0'}>
+        <Section>
+          <Show when={!!stars()}>
+            <Row clickable={() => PopupElement.createPopup(PopupStars)}>
+              <Row.Icon icon="star" class="row-icon-stars-color" />
+              <Row.Title titleRight={'' + stars()} titleRightSecondary>
+                {i18n('MenuTelegramStars')}
+              </Row.Title>
+            </Row>
+          </Show>
+          <Show when={hasTonTransactions() || String(starsTon()) !== '0'}>
+            <Row clickable={() => PopupElement.createPopup(PopupStars, {ton: true})}>
+              <Row.Icon icon="ton" />
+              <Row.Title titleRight={formatNanoton(starsTon())} titleRightSecondary>
+                {i18n('MenuTelegramStarsTon')}
+              </Row.Title>
+            </Row>
+          </Show>
+        </Section>
+      </Show>
+
 
     </>
   );
