@@ -1191,7 +1191,7 @@ export class AppDialogsManager {
 
     addFiltersPromise && await wrapPromiseWithMiddleware(addFiltersPromise);
 
-    this.renderStories();
+    // stories are disabled
     this.doNotRenderChatList = undefined;
 
     this.filterId = -1;
@@ -1436,7 +1436,7 @@ export class AppDialogsManager {
       }
 
       const length = Object.keys(this.filtersRendered).length;
-      const show = length > 1;
+      const show = false && length > 1; // folders tabs are disabled
       const wasShowing = !this.folders.menuScrollContainer.classList.contains('hide');
 
       if(show !== wasShowing) {
