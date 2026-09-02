@@ -334,9 +334,8 @@ export class AppSidebarLeft extends SidebarSlider {
       } else {
         toggleRightButtons(false, await DeferredIsUsingPasscode.isUsingPasscode());
       }
-
-      appDialogsManager.resizeStoriesList?.();
     };
+
 
     const toggleRightButtons = (isPremium: boolean, isUsingPasscode: boolean) => {
       if(isPremium) sidebarHeader.append(statusBtnIcon);
@@ -508,9 +507,8 @@ export class AppSidebarLeft extends SidebarSlider {
 
     if(canShowCtrlFTip && this.isCollapsed() && !hasFoldersSidebar()) {
       this.showCtrlFTip();
-    }
+  }
 
-    if(!this.isCollapsed()) appDialogsManager.resizeStoriesList?.();
   }
 
   public hasSomethingOpenInside() {
