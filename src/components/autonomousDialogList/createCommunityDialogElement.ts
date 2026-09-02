@@ -38,8 +38,7 @@ export default function createCommunityDialogElement(
     manager.addListDialog(dialogOptions) :
     manager.addDialogNew({
       ...dialogOptions,
-      autonomous: false,
-      withStories: true
+      autonomous: false
     });
   if(initialize) {
     void Promise.all(loadPromises).catch(noop);

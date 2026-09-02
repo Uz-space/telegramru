@@ -82,8 +82,7 @@ export default class SortedUserList extends SortedList<SortedUser> {
           wrapOptions: {
             lazyLoadQueue: this.lazyLoadQueue,
             middleware: this.middlewareHelper.get()
-          },
-          withStories: true
+          }
         });
 
         const rank = this.ranks.get(base.id);

@@ -205,7 +205,7 @@ export type DialogElementOptions = {
   monoforumParentPeerId?: PeerId,
   wrapOptions: WrapSomethingOptions,
   isMainList?: boolean,
-  withStories?: boolean,
+  withVideoAvatar?: boolean,
   controlled?: boolean,
   dontSetActive?: boolean,
   asAllChats?: AsAllChatsType,
@@ -247,7 +247,7 @@ export class DialogElement extends Row {
     monoforumParentPeerId,
     wrapOptions = {},
     isMainList,
-    withStories,
+    withVideoAvatar,
     controlled,
     dontSetActive,
     asAllChats,
@@ -295,10 +295,7 @@ export class DialogElement extends Row {
         isDialog: !!meAsSaved,
         peerId: fromName ? NULL_PEER_ID : usePeerId,
         peerTitle: fromName,
-        withStories,
-        // Animate video avatars only in the primary chat list (withStories), not
-        // in compact pickers / search rows.
-        withVideoAvatar: withStories,
+        withVideoAvatar,
         wrapOptions: newWrapOptions,
         meAsNotes: isSavedDialog,
         asAllChats: asAllChats === 'monoforum',
@@ -1948,30 +1945,6 @@ export class AppDialogsManager {
 
     const setPeerFunc = (openInner ? appImManager.setInnerPeer : appImManager.setPeer).bind(appImManager);
 
-    const findAvatarWithStories = (target: EventTarget) => {
-      return (target as HTMLElement).closest('.avatar.has-stories') as HTMLElement;
-    };
-
-    const getOpenStoryCallback = (target: EventTarget) => {
-      const avatar = findAvatarWithStories(target);
-
-      if(avatar) return () => {
-        appImManager.openStoriesFromAvatar(avatar);
-      };
-
-      const archiveAvatar = (target as HTMLElement).closest('.archive-dialog-with-stories') as HTMLElement;
-      const archiveDialog = (target as HTMLElement).closest(archiveDialogTagName);
-
-      if(archiveAvatar && archiveDialog instanceof ArchiveDialog) return () => {
-        archiveDialog.controls?.openStory?.();
-      };
-    }
-
-    const isOpeningStoriesDisabled = () => appSidebarLeft.isCollapsed() && !appSidebarLeft.hasSomethingOpenInside();
-
-    let willOpenStory = false;
-
-    const setWillOpenStory = (e: Event) => willOpenStory = !isOpeningStoriesDisabled() && !!getOpenStoryCallback(e.target);
     const isDialogListAction = (target: EventTarget) => {
       return !!(target as HTMLElement).closest?.('[data-dialog-list-action]');
     };
@@ -1980,7 +1953,6 @@ export class AppDialogsManager {
     list.addEventListener('mousedown', (e) => {
       if(
         e.button !== 0 ||
-        setWillOpenStory(e) ||
         isDialogListAction(e.target)
       ) {
         return;
@@ -2143,11 +2115,6 @@ export class AppDialogsManager {
       if(e.button === 0) {
         cancelEvent(e);
       }
-
-      if(!willOpenStory || isOpeningStoriesDisabled()) return;
-
-      const callback = getOpenStoryCallback(e.target);
-      callback?.();
     }, {capture: true});
 
     if(withContext) {
@@ -2592,7 +2559,7 @@ export class AppDialogsManager {
 
   public addListDialog(options: Parameters<AppDialogsManager['addDialogNew']>[0] & InitDialogAdditionalOptions) {
     options.autonomous = false;
-    options.withStories = true;
+    options.withVideoAvatar = true;
 
     const ret = this.addDialogNew(options);
 

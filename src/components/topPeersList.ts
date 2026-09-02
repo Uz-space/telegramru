@@ -46,8 +46,7 @@ export default function createTopPeersList({
         noIcons: group.noIcons,
         wrapOptions: {
           middleware
-        },
-        withStories: true
+        }
       });
 
       dom.subtitleEl.remove();

@@ -1133,7 +1133,6 @@ export default class AppSelectPeers {
         wrapOptions: {
           middleware: this.middlewareHelperLoader.get()
         },
-        withStories: this.withStories,
         ...(this.additionalDialogParams?.(key) || {})
       });
 
