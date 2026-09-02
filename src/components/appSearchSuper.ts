@@ -1121,7 +1121,6 @@ export default class AppSearchSuper {
       wrapOptions: {
         middleware
       },
-      withStories: true,
       meAsSaved: !isSaved,
       autonomous: isSaved,
       fromName: !peerId ? getFwdFromName(message.fwd_from) : undefined
@@ -1620,8 +1619,7 @@ export default class AppSearchSuper {
             autonomous: group.autonomous,
             wrapOptions: {
               middleware
-            },
-            withStories: true
+            }
           });
           return {dom, peerId};
         }).filter(Boolean).forEach(async({dom, peerId}) => addDialogSubtitle(dom, peerId));
@@ -1749,8 +1747,7 @@ export default class AppSearchSuper {
                 autonomous: true,
                 wrapOptions: {
                   middleware: middlewareHelper.get()
-                },
-                withStories: true
+                }
               });
               (async() => {
                 dom.lastMessageSpan.append(await (peerId.isUser() ?

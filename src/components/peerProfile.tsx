@@ -506,7 +506,6 @@ PeerProfile.PersonalChannel = () => {
       avatarSize: 'abitbigger',
       append: true,
       wrapOptions: {middleware},
-      withStories: true,
       loadPromises
     });
 
@@ -1549,7 +1548,6 @@ function CommunityProfileDialog(props: {
     fromName: props.community.title,
     noIcons: true,
     wrapOptions: {middleware: middleware.get()},
-    withStories: false,
     loadPromises
   });
   const communityAvatar = wrapSolidComponent(() => (

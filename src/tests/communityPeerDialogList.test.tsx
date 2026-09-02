@@ -242,8 +242,7 @@ describe('CommunityPeerDialogList', () => {
         autonomous: false,
         avatarSize: 'abitbigger',
         controlled: true,
-        peerId: secondPeerId,
-        withStories: true
+        peerId: secondPeerId
       })
     );
     expect(mocks.addDialogNew).toHaveBeenCalledWith(

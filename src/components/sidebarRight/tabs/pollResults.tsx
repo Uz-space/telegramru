@@ -84,7 +84,6 @@ export default class AppPollResultsTab extends SliderSuperTab {
             rippleEnabled: false,
             meAsSaved: false,
             avatarSize: 'small',
-            withStories: false,
             wrapOptions: {
               middleware: this.middlewareHelper.get()
             },
