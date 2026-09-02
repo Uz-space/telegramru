@@ -507,9 +507,9 @@ export class AppSidebarLeft extends SidebarSlider {
 
     if(canShowCtrlFTip && this.isCollapsed() && !hasFoldersSidebar()) {
       this.showCtrlFTip();
+    }
   }
 
-  }
 
   public hasSomethingOpenInside() {
     return this.hasTabsInNavigation() || this.isSearchActive || !!appDialogsManager.forumTab;
