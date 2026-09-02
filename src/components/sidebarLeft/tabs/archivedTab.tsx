@@ -42,9 +42,6 @@ const ArchivedTab: Component = () => {
   };
 
   (tab as any)._onCloseAfterTimeout = () => {
-    disposeStories?.();
-    disposeStories = undefined;
-    resizeStoriesContainer = undefined;
     autonomousDialogList.destroy();
     autonomousDialogList = undefined;
   };
