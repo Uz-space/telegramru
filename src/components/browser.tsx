@@ -285,12 +285,6 @@ function BrowserHeader(props: {
             }}
             </For>
           </Animated>
-          <BrowserHeaderButton
-            class={classNames(styles.BrowserHeaderTabIcon, styles.BrowserHeaderNewButton)}
-            onClick={() => openCatalogueInAppBrowser()}
-          >
-            <span class={styles.BrowserHeaderTabIconInner}><IconTsx icon="plus" /></span>
-          </BrowserHeaderButton>
         </div>
       </Scrollable>
       <div
