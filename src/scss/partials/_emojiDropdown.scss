@@ -63,7 +63,7 @@ $menu-search-translateY: -#{$menu-height};
 
   &.is-under {
     --width: auto;
-    --height: min(282px, calc(var(--100vh-inset) - 135px));
+    --height: min(340px, calc(var(--100vh-inset) - 135px));
     position: relative;
     transform: none;
     inset: unset;
