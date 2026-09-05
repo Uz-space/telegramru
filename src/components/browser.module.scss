@@ -7,7 +7,7 @@ $transition: .2s var(--transition-standard-easing);
   position: fixed;
   width: 480px;
   height: 688px;
-  border-radius: $border-radius-big;
+  border-radius: $border-radius-medium;
   // top: 100px;
   // left: calc(50vw - 240px);
   z-index: 4;
@@ -261,7 +261,7 @@ $transition: .2s var(--transition-standard-easing);
   &Body {
     margin-top: -3rem;
     background-color: var(--surface-color);
-    border-radius: $border-radius-big;
+    border-radius: $border-radius-medium;
     overflow: hidden;
     position: relative;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, .08);
