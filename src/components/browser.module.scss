@@ -259,6 +259,7 @@ $transition: .2s var(--transition-standard-easing);
   }
 
   &Body {
+    margin-top: -3rem;
     background-color: var(--surface-color);
     border-radius: $border-radius-big;
     overflow: hidden;
