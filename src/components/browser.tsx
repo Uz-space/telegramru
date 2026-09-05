@@ -554,7 +554,7 @@ function Browser(props: {
         style={{
           'width': movableState().width + 'px',
           '--browser-width': movableState().width + 'px',
-          'height': movableState().height - additionalHeight + 'px'
+          'height': movableState().height + 'px'
         }}
       >
         <For each={state.pages}>{(page) => {
