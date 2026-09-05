@@ -170,12 +170,7 @@ $transition: .2s var(--transition-standard-easing);
         height: 100%;
         transform: translate(1.875rem);
         width: var(--text-width);
-        background: linear-gradient(
-          90deg,
-          transparent 50%,
-          rgba(var(--surface-color-rgb), 1) 80%,
-          rgba(var(--surface-color-rgb), 1) 100%
-        );
+        background: none;
         pointer-events: none !important;
       }
 
@@ -208,15 +203,16 @@ $transition: .2s var(--transition-standard-easing);
     }
 
     &Selector {
+      display: none;
       position: absolute;
-      background-color: var(--surface-color);
+      background-color: transparent;
       height: 100%;
       z-index: -1;
       border-top-left-radius: $border-radius-big;
       border-top-right-radius: $border-radius-big;
       pointer-events: none;
       opacity: 1;
-      box-shadow: 0px 0px 5px rgba(0, 0, 0, .08);
+      box-shadow: none;
 
       @include animation-level-global(2) {
         transition: transform $transition, width $transition, opacity $transition;
