@@ -305,6 +305,8 @@ $transition: .2s var(--transition-standard-easing);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    backdrop-filter: none;
+    background-color: rgb(var(--body-background-color-rgb));
   }
 
   &.collapsed {

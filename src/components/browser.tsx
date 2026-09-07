@@ -500,14 +500,16 @@ function Browser(props: {
       const {movable} = movablePanel;
       if(!movable) {
         createEffect(() => {
+          const windowWidth = windowSize.width - 8 * 2;
+          const windowHeight = windowSize.height - 8 * 2;
           setMovableState({
-            width: windowSize.width - 8 * 2,
-            height: windowSize.height - 8 * 2
+            width: windowWidth,
+            height: windowHeight + additionalHeight
           });
 
 
-          ref.style.width = movableState().width + 'px';
-          ref.style.height = movableState().height + 'px';
+          ref.style.width = windowWidth + 'px';
+          ref.style.height = windowHeight + 'px';
         });
 
         actions.setCanCollapse(false);
