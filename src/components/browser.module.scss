@@ -4,7 +4,7 @@
 $transition: .2s var(--transition-standard-easing);
 
 .Browser {
-  $mini-app-border-radius: 29px;
+  $mini-app-border-radius: 30px;
 
   position: fixed;
   width: 480px;
@@ -182,7 +182,7 @@ $transition: .2s var(--transition-standard-easing);
       }
 
       &.active &Title {
-        width: 0;
+        width: var(--text-width);
       }
 
       &Hover {
@@ -305,8 +305,6 @@ $transition: .2s var(--transition-standard-easing);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    backdrop-filter: none;
-    background-color: rgb(var(--body-background-color-rgb));
   }
 
   &.collapsed {
