@@ -182,7 +182,7 @@ $transition: .2s var(--transition-standard-easing);
       }
 
       &.active &Title {
-        width: var(--text-width);
+        width: 0;
       }
 
       &Hover {
