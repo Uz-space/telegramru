@@ -24,7 +24,7 @@ $transition: .2s var(--transition-standard-easing);
   }
 
   &Header {
-    display: none;
+    display: flex;
     justify-content: space-between;
     align-items: center;
     height: 3rem;
@@ -51,7 +51,7 @@ $transition: .2s var(--transition-standard-easing);
       height: 100%;
 
       &Scrollable {
-        display: flex;
+        display: none;
         position: relative;
         flex: 1 1 auto;
         margin-inline: -5px 1rem;
