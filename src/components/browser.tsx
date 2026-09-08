@@ -501,8 +501,8 @@ function Browser(props: {
       if(!movable) {
         createEffect(() => {
           setMovableState({
-            width: windowSize.width - 8 * 2,
-            height: windowSize.height - 8 * 2
+            width: windowSize.width,
+            height: windowSize.height
           });
 
 

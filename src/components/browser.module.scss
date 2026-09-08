@@ -51,7 +51,7 @@ $transition: .2s var(--transition-standard-easing);
       height: 100%;
 
       &Scrollable {
-        display: flex;
+        display: none;
         position: relative;
         flex: 1 1 auto;
         margin-inline: -5px 1rem;
@@ -236,6 +236,7 @@ $transition: .2s var(--transition-standard-easing);
     }
 
     &CollapsedTitle {
+      display: none;
       position: absolute;
       opacity: 0;
       font-weight: var(--font-weight-bold);
