@@ -450,8 +450,8 @@ const BrowserContext = createContext<BrowserContextValue>();
 function Browser(props: {
   onExit: () => void
 }) {
-  const width = 480;
-  const height = 640;
+  const width = IS_TOUCH_SUPPORTED ? windowSize.width : 480;
+  const height = IS_TOUCH_SUPPORTED ? windowSize.height - 48 : 640;
   const aspectRatio = width / height;
   const additionalHeight = 48;
   const minWidth = 328;
