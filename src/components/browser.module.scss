@@ -4,11 +4,9 @@
 $transition: .2s var(--transition-standard-easing);
 
 .Browser {
-  $mini-app-border-radius: 0;
+  $mini-app-border-radius: 30px;
 
   position: fixed;
-  top: 0 !important;
-  left: 0 !important;
   width: 480px;
   height: 688px;
   border-radius: $mini-app-border-radius;
