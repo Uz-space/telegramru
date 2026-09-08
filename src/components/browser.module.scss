@@ -236,6 +236,7 @@ $transition: .2s var(--transition-standard-easing);
     }
 
     &CollapsedTitle {
+      display: none;
       position: absolute;
       opacity: 0;
       font-weight: var(--font-weight-bold);
