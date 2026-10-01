@@ -4,20 +4,15 @@ import styles from '@components/browser.module.scss';
 import {ButtonIconTsx} from '@components/buttonIconTsx';
 import getTextWidth from '@helpers/canvas/getTextWidth';
 import {FontFull, FontFullBold} from '@config/font';
-import {createStore, reconcile, unwrap} from 'solid-js/store';
+import {createStore, reconcile} from 'solid-js/store';
 import untrackActions from '@helpers/solid/untrackActions';
 import classNames from '@helpers/string/classNames';
 import Scrollable from '@components/scrollable2';
 import fastSmoothScroll from '@helpers/fastSmoothScroll';
 import {IconTsx} from '@components/iconTsx';
-import {ButtonMenuItemOptionsVerifiable, ButtonMenuSync} from '@components/buttonMenu';
-import {attachContextMenuListener} from '@helpers/dom/attachContextMenuListener';
+import {ButtonMenuItemOptionsVerifiable} from '@components/buttonMenu';
 import ListenerSetter from '@helpers/listenerSetter';
 import findUpClassName from '@helpers/dom/findUpClassName';
-import contextMenuController from '@helpers/contextMenuController';
-import positionMenu from '@helpers/positionMenu';
-import copy from '@helpers/object/copy';
-import {filterButtonMenuItems} from '@components/buttonMenuToggle';
 import Animated from '@helpers/solid/animations';
 import WebApp, {WebAppLaunchOptions} from '@components/webApp';
 import deferredPromise from '@helpers/cancellablePromise';
@@ -38,7 +33,6 @@ import {useUser} from '@stores/peers';
 import {Game, Message, Page, User} from '@layer';
 import TelegramWebView from '@components/telegramWebView';
 import showForwardPopup from '@components/popups/forward';
-import {getOverlayRoot} from '@helpers/appWindow';
 import getPeerActiveUsernames from '@appManagers/utils/peers/getPeerActiveUsernames';
 import internalLinkProcessor from '@lib/internalLinkProcessor';
 import {INTERNAL_LINK_TYPE} from '@lib/internalLink';
@@ -90,12 +84,13 @@ function BrowserHeaderButton(props: Parameters<typeof ButtonIconTsx>[0]) {
   );
 }
 
-function BrowserHeaderTab(props: {
+type BrowserHeaderTabProps = {
   page: BrowserPageProps,
   ref: Ref<HTMLDivElement>,
-  openPageMenu: (e: MouseEvent | TouchEvent) => void,
   index: Accessor<number>
-}) {
+};
+
+function BrowserHeaderTab(props: BrowserHeaderTabProps) {
   const [state, actions] = useContext(BrowserContext);
   const isActive = createMemo(() => !state.collapsed && state.page === props.page);
   const transform = createMemo(() => {
@@ -129,11 +124,6 @@ function BrowserHeaderTab(props: {
     >
       <BrowserHeaderButton class={styles.BrowserHeaderTabIcon}>
         <span class={styles.BrowserHeaderTabIconInner}>{props.page.icon}</span>
-        <IconTsx
-          icon="more"
-          class={classNames(styles.BrowserHeaderTabHover, styles.BrowserHeaderTabMore)}
-          onClick={props.openPageMenu}
-        />
       </BrowserHeaderButton>
       <div dir="auto" class={styles.BrowserHeaderTabTitle}>
         {documentFragmentToNodes(wrapEmojiText(props.page.title))}
@@ -178,57 +168,6 @@ function BrowserHeader(props: {
     });
   });
 
-  const openPageMenu = async(e: MouseEvent | TouchEvent) => {
-    const target = findUpClassName(e.target, styles.BrowserHeaderTab);
-    if(!target) {
-      return;
-    }
-
-    if(!('touches' in e)) e.preventDefault(); // cross-realm-safe mouse check (Document PiP window)
-    // smth
-    if(!('touches' in e)) e.cancelBubble = true;
-
-    const page = state.pages.find((page) => tabMap.get(page.id) === target);
-    if(!page?.menuButtons) {
-      return;
-    }
-
-    const listenerSetter = new ListenerSetter();
-    const copied = page.menuButtons.map((button) => (button = unwrap(button), button.element ? button : copy(button)));
-    const buttons = (await filterButtonMenuItems(copied)).map((button) => {
-      button.options = {listenerSetter};
-      return button;
-    });
-    const element = ButtonMenuSync({
-      buttons,
-      listenerSetter
-    });
-    element.classList.add('contextmenu');
-
-    getOverlayRoot().append(element);
-
-    positionMenu(e, element);
-    contextMenuController.openBtnMenu(element, () => {
-      setTimeout(() => {
-        element.remove();
-        listenerSetter.removeAll();
-      }, 1e3);
-    });
-  };
-
-  onMount(() => {
-    const listenerSetter = new ListenerSetter();
-    attachContextMenuListener({
-      element: scrollableRef,
-      callback: openPageMenu,
-      listenerSetter
-    });
-
-    onCleanup(() => {
-      listenerSetter.removeAll();
-    });
-  });
-
   const collapsedTitle = createMemo(() => {
     const wrapTitles = (pages: BrowserPageProps[]) => pages.map((page) => wrapEmojiText(page.title));
     const pages = state.pages;
@@ -243,7 +182,7 @@ function BrowserHeader(props: {
 
   let scrollableRef: HTMLDivElement;
   return (
-    <div class={styles.BrowserHeader}>
+    <div class={classNames(styles.BrowserHeader, state.pages.length === 1 && !state.collapsed && styles.single)}>
       <BrowserHeaderButton
         onClick={() => {
           if(needBackButton()) {
@@ -277,7 +216,6 @@ function BrowserHeader(props: {
               return (
                 <BrowserHeaderTab
                   page={page}
-                  openPageMenu={openPageMenu}
                   ref={(el) => tabMap.set(page.id, el)}
                   index={index}
                 />
