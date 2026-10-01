@@ -41,6 +41,22 @@ $transition: .2s var(--transition-standard-easing);
       flex: 0 0 auto;
     }
 
+    &.single {
+      // Single mini app: center its tab title across the whole header
+      .BrowserHeaderTabsScrollable {
+        position: absolute;
+        inset-inline: 0;
+        flex: none;
+        margin-inline: 0;
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
+
+      .BrowserHeaderTabs {
+        margin-inline: auto;
+      }
+    }
+
     &Tabs {
       display: flex;
       align-items: center;
@@ -140,22 +156,6 @@ $transition: .2s var(--transition-standard-easing);
             transition: border-color $transition;
           }
         }
-      }
-
-      &More {
-        position: absolute;
-        width: 1.5rem;
-        height: 1.5rem;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 1.25rem;
-        border-radius: 50%;
-        background-color: rgba(0, 0, 0, .4);
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
       }
 
       &Close {
