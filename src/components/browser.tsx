@@ -168,57 +168,6 @@ function BrowserHeader(props: {
     });
   });
 
-  const openPageMenu = async(e: MouseEvent | TouchEvent) => {
-    const target = findUpClassName(e.target, styles.BrowserHeaderTab);
-    if(!target) {
-      return;
-    }
-
-    if(!('touches' in e)) e.preventDefault(); // cross-realm-safe mouse check (Document PiP window)
-    // smth
-    if(!('touches' in e)) e.cancelBubble = true;
-
-    const page = state.pages.find((page) => tabMap.get(page.id) === target);
-    if(!page?.menuButtons) {
-      return;
-    }
-
-    const listenerSetter = new ListenerSetter();
-    const copied = page.menuButtons.map((button) => (button = unwrap(button), button.element ? button : copy(button)));
-    const buttons = (await filterButtonMenuItems(copied)).map((button) => {
-      button.options = {listenerSetter};
-      return button;
-    });
-    const element = ButtonMenuSync({
-      buttons,
-      listenerSetter
-    });
-    element.classList.add('contextmenu');
-
-    getOverlayRoot().append(element);
-
-    positionMenu(e, element);
-    contextMenuController.openBtnMenu(element, () => {
-      setTimeout(() => {
-        element.remove();
-        listenerSetter.removeAll();
-      }, 1e3);
-    });
-  };
-
-  onMount(() => {
-    const listenerSetter = new ListenerSetter();
-    attachContextMenuListener({
-      element: scrollableRef,
-      callback: openPageMenu,
-      listenerSetter
-    });
-
-    onCleanup(() => {
-      listenerSetter.removeAll();
-    });
-  });
-
   const collapsedTitle = createMemo(() => {
     const wrapTitles = (pages: BrowserPageProps[]) => pages.map((page) => wrapEmojiText(page.title));
     const pages = state.pages;
