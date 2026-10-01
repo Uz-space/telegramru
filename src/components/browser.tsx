@@ -4,20 +4,15 @@ import styles from '@components/browser.module.scss';
 import {ButtonIconTsx} from '@components/buttonIconTsx';
 import getTextWidth from '@helpers/canvas/getTextWidth';
 import {FontFull, FontFullBold} from '@config/font';
-import {createStore, reconcile, unwrap} from 'solid-js/store';
+import {createStore, reconcile} from 'solid-js/store';
 import untrackActions from '@helpers/solid/untrackActions';
 import classNames from '@helpers/string/classNames';
 import Scrollable from '@components/scrollable2';
 import fastSmoothScroll from '@helpers/fastSmoothScroll';
 import {IconTsx} from '@components/iconTsx';
-import {ButtonMenuItemOptionsVerifiable, ButtonMenuSync} from '@components/buttonMenu';
-import {attachContextMenuListener} from '@helpers/dom/attachContextMenuListener';
+import {ButtonMenuItemOptionsVerifiable} from '@components/buttonMenu';
 import ListenerSetter from '@helpers/listenerSetter';
 import findUpClassName from '@helpers/dom/findUpClassName';
-import contextMenuController from '@helpers/contextMenuController';
-import positionMenu from '@helpers/positionMenu';
-import copy from '@helpers/object/copy';
-import {filterButtonMenuItems} from '@components/buttonMenuToggle';
 import Animated from '@helpers/solid/animations';
 import WebApp, {WebAppLaunchOptions} from '@components/webApp';
 import deferredPromise from '@helpers/cancellablePromise';
@@ -38,7 +33,6 @@ import {useUser} from '@stores/peers';
 import {Game, Message, Page, User} from '@layer';
 import TelegramWebView from '@components/telegramWebView';
 import showForwardPopup from '@components/popups/forward';
-import {getOverlayRoot} from '@helpers/appWindow';
 import getPeerActiveUsernames from '@appManagers/utils/peers/getPeerActiveUsernames';
 import internalLinkProcessor from '@lib/internalLinkProcessor';
 import {INTERNAL_LINK_TYPE} from '@lib/internalLink';
@@ -90,12 +84,13 @@ function BrowserHeaderButton(props: Parameters<typeof ButtonIconTsx>[0]) {
   );
 }
 
-function BrowserHeaderTab(props: {
+type BrowserHeaderTabProps = {
   page: BrowserPageProps,
   ref: Ref<HTMLDivElement>,
-  openPageMenu: (e: MouseEvent | TouchEvent) => void,
   index: Accessor<number>
-}) {
+};
+
+function BrowserHeaderTab(props: BrowserHeaderTabProps) {
   const [state, actions] = useContext(BrowserContext);
   const isActive = createMemo(() => !state.collapsed && state.page === props.page);
   const transform = createMemo(() => {
@@ -129,11 +124,6 @@ function BrowserHeaderTab(props: {
     >
       <BrowserHeaderButton class={styles.BrowserHeaderTabIcon}>
         <span class={styles.BrowserHeaderTabIconInner}>{props.page.icon}</span>
-        <IconTsx
-          icon="more"
-          class={classNames(styles.BrowserHeaderTabHover, styles.BrowserHeaderTabMore)}
-          onClick={props.openPageMenu}
-        />
       </BrowserHeaderButton>
       <div dir="auto" class={styles.BrowserHeaderTabTitle}>
         {documentFragmentToNodes(wrapEmojiText(props.page.title))}
