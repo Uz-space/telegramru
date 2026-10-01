@@ -182,7 +182,7 @@ function BrowserHeader(props: {
 
   let scrollableRef: HTMLDivElement;
   return (
-    <div class={styles.BrowserHeader}>
+    <div class={classNames(styles.BrowserHeader, state.pages.length === 1 && !state.collapsed && styles.single)}>
       <BrowserHeaderButton
         onClick={() => {
           if(needBackButton()) {
@@ -216,7 +216,6 @@ function BrowserHeader(props: {
               return (
                 <BrowserHeaderTab
                   page={page}
-                  openPageMenu={openPageMenu}
                   ref={(el) => tabMap.set(page.id, el)}
                   index={index}
                 />
