@@ -128,6 +128,7 @@ $transition: .2s var(--transition-standard-easing);
       }
 
       &Title {
+        margin-left: 2.125rem;
         width: 0px;
         font-weight: var(--font-weight-bold);
         white-space: nowrap;
@@ -136,25 +137,6 @@ $transition: .2s var(--transition-standard-easing);
 
         @include animation-level-global(2) {
           transition: width $transition;
-        }
-      }
-
-      &Icon {
-        margin-left: .25rem;
-
-        @include animation-level-global(2) {
-          transition: margin-left $transition;
-        }
-
-        &Inner {
-          border: 1.5px solid transparent;
-          width: 1.6875rem;
-          height: 1.6875rem;
-          border-radius: 50%;
-
-          @include animation-level-global(2) {
-            transition: border-color $transition;
-          }
         }
       }
 

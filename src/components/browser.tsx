@@ -122,9 +122,6 @@ function BrowserHeaderTab(props: BrowserHeaderTabProps) {
       }}
       onClick={() => actions.select(props.page)}
     >
-      <BrowserHeaderButton class={styles.BrowserHeaderTabIcon}>
-        <span class={styles.BrowserHeaderTabIconInner}>{props.page.icon}</span>
-      </BrowserHeaderButton>
       <div dir="auto" class={styles.BrowserHeaderTabTitle}>
         {documentFragmentToNodes(wrapEmojiText(props.page.title))}
       </div>
