@@ -544,7 +544,15 @@ function makeBrowserPage(props: BrowserPageProps): BrowserPageProps {
 }
 
 let lastContext: BrowserContextValue;
+// A closed (destroyed) browser may still be fading out; never reuse it for new pages
+function dropDestroyedContext() {
+  if(lastContext?.[0].destroyed) {
+    lastContext = undefined;
+  }
+}
+
 export function openInAppBrowser(page?: BrowserPageProps) {
+  dropDestroyedContext();
   if(lastContext) {
     lastContext[1].add(page);
     lastContext[1].toggleCollapsed(false);
@@ -562,7 +570,7 @@ export function openInAppBrowser(page?: BrowserPageProps) {
       <BrowserContext.Provider value={store}>
         <Browser
           onExit={() => {
-            lastContext = undefined;
+            if(lastContext === store) lastContext = undefined;
             dispose();
           }}
         />
@@ -572,6 +580,7 @@ export function openInAppBrowser(page?: BrowserPageProps) {
 }
 
 export async function openWebAppInAppBrowser(options: WebAppLaunchOptions) {
+  dropDestroyedContext();
   if(lastContext && options.cacheKey) {
     const page = lastContext[0].pages.find((page) => page.cacheKey === options.cacheKey);
     if(page) {
@@ -677,6 +686,7 @@ export async function openGameInAppBrowser(options: {
   const {game, message, url} = options;
   const cacheKey = `game-${game.id}-${message.peerId}-${message.mid}`;
 
+  dropDestroyedContext();
   if(lastContext) {
     const existing = lastContext[0].pages.find((page) => page.cacheKey === cacheKey);
     if(existing) {
