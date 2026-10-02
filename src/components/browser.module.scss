@@ -158,11 +158,6 @@ $transition: .2s var(--transition-standard-easing);
         pointer-events: none !important;
       }
 
-      &.active &Icon,
-      &.first &Icon {
-        margin-left: 1.25rem;
-      }
-
       &.active &Title {
         width: var(--text-width);
       }
@@ -301,10 +296,6 @@ $transition: .2s var(--transition-standard-easing);
   &.collapsed &HeaderSelector,
   &.collapsed &HeaderNewButton {
     opacity: 0;
-  }
-
-  &.collapsed &HeaderTabIconInner {
-    border-color: var(--secondary-color);
   }
 
   &.collapsed &HeaderCollapsedTitle {
