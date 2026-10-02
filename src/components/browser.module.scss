@@ -42,7 +42,8 @@ $transition: .2s var(--transition-standard-easing);
     }
 
     &.single {
-      // Single mini app: center its tab title across the whole header
+      // Single mini app: center its tab title across the whole header.
+      // pointer-events: none so the overlay doesn't block the X / collapse buttons.
       .BrowserHeaderTabsScrollable {
         position: absolute;
         inset-inline: 0;
@@ -50,10 +51,26 @@ $transition: .2s var(--transition-standard-easing);
         margin-inline: 0;
         -webkit-mask-image: none;
         mask-image: none;
+        pointer-events: none;
       }
 
       .BrowserHeaderTabs {
         margin-inline: auto;
+      }
+
+      .BrowserHeaderTab {
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
+
+      .BrowserHeaderTabTitle {
+        margin-left: 0;
+        text-align: center;
+      }
+
+      .BrowserHeaderTabMask,
+      .BrowserHeaderTabClose {
+        display: none;
       }
     }
 
