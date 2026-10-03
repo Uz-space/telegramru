@@ -325,7 +325,8 @@ export default class PopupPremium extends PopupElement {
     });
   }
 
-  public static show(...args: ConstructorParameters<typeof PopupPremium>) {
-    PopupElement.createPopup(PopupPremium, ...args);
-  }
+  // Premium UI is removed from this client: never display the popup.
+  public show() {}
+
+  public static show(..._args: ConstructorParameters<typeof PopupPremium>) {}
 }
