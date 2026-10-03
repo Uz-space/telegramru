@@ -36,8 +36,28 @@ export async function bootstrapIm(): Promise<void> {
     Promise.resolve(null) :
     import('@vendor/recorder.min.js' as any);
 
+  // Retry the chunk import: right after an account-switch reload the module
+  // fetch can transiently fail, leaving a blank white screen.
+  const importDialogsManager = async(): Promise<typeof import('@lib/appDialogsManager')> => {
+    for(let attempt = 0; ; ++attempt) {
+      try {
+        return await import('@lib/appDialogsManager');
+      } catch(err) {
+        if(attempt >= 4) {
+          const key = 'tweb-im-import-reload';
+          if(!sessionStorage.getItem(key)) {
+            sessionStorage.setItem(key, '1');
+            location.reload();
+          }
+          throw err;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 300 * (attempt + 1)));
+      }
+    }
+  };
+
   const [{default: appDialogsManager}, recorder] = await Promise.all([
-    import('@lib/appDialogsManager'),
+    importDialogsManager(),
     recorderImport,
     loadFonts(),
     'requestVideoFrameCallback' in HTMLVideoElement.prototype ?
@@ -48,6 +68,7 @@ export async function bootstrapIm(): Promise<void> {
   if(recorder) {
     (window as any).Recorder = recorder.default;
   }
+  sessionStorage.removeItem('tweb-im-import-reload');
   appDialogsManager.start();
   // start() toggles body.is-left-column-shown synchronously
   // (appImManager.selectTab(CHATLIST)). The .main-column transform/opacity
