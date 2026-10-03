@@ -12449,12 +12449,10 @@ export class AppMessagesManager extends AppManager {
     //   ]
     // });
 
-    // * don't show sponsored messages in own channels
-    if(!peerId.isUser() && await this.canSendToPeer(peerId)) {
-      return Promise.resolve({
-        _: 'messages.sponsoredMessagesEmpty'
-      });
-    }
+    // * ads are disabled: never show sponsored messages
+    return Promise.resolve({
+      _: 'messages.sponsoredMessagesEmpty'
+    });
 
     const promise = this.apiManager.invokeApiCacheable('messages.getSponsoredMessages', {
       peer: this.appPeersManager.getInputPeerById(peerId)
